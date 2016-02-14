@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
+var chat = require('./chat');
 
 var app = express();
 
@@ -42,5 +43,6 @@ app.use(function(err, req, res, next) {
 // run server on port = 3000
 var server = http.createServer(app);
 server.listen(3000);
+chat(server);
 
 module.exports = app;

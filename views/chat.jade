@@ -2,31 +2,21 @@ extends layout
 
 block content
 
-    div#chat-wrapper
+    div(ng-app='chatApp')
+        div(ng-controller='ChatController')
+            div#chat-wrapper
 
-        div.message
-            div.info.clearfix
-                div.author
-                    strong Kaka
-                div.date
-                    span 11.03.1994 12:51
-            div.content
-                p Jakaś wiadomość
+                div.message(ng-repeat='msg in messages', class='{{msg.cssClass}}')
+                    div.info.clearfix
+                        div.author
+                            strong {{msg.user}}
+                        div.date
+                            span {{msg.date | date:'dd.MM.yyyy HH:mm:ss'}}
+                    div.content
+                        p {{msg.content}}
 
-        div.message.my
-            div.info.clearfix
-                div.author
-                    strong Kaka
-                div.date
-                    span 11.03.1994 12:51
-            div.content
-                p Jakaś wiadomość
-
-        div.message.server
-            p
-                strong Kaka is connected!
-
-    div#chat-form-wrapper
-        form(action='#' method='POST')
-            input(type='text', placeholder='Type a message...', required='required')
-            button(type='submit') Send!
+            div#chat-form-wrapper
+                form(ng-submit='sendMessage()')
+                    input(type='text', ng-model='message', placeholder='Type a message...',
+                        autocomplete='off', required='required')
+                    button(type='submit') Send!

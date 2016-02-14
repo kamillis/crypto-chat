@@ -7,6 +7,8 @@ html(lang='en')
         link(rel='stylesheet', href='/stylesheets/style.css')
         script(src='/javascripts/angular.min.js')
         script(src='/javascripts/socket.io.js')
+        if user && room
+            script= "var user = '" + user + "'; var room = '" + room + "';"
         script(src='/javascripts/chat.js')
         <!--[if lt IE 9]>
         script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
