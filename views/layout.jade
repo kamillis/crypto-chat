@@ -1,7 +1,15 @@
 doctype html
-html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+html(lang='en')
+    head
+        title= title
+        meta(charset='UTF-8')
+        link(rel='stylesheet', href='/stylesheets/reset.css')
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        script(src='/javascripts/angular.min.js')
+        script(src='/javascripts/socket.io.js')
+        script(src='/javascripts/chat.js')
+        <!--[if lt IE 9]>
+        script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+        <![endif]-->
+    body
+        block content
