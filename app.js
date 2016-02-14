@@ -33,6 +33,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
+        title: 'Crypto Chat',
         message: err.message,
         error: err
     });

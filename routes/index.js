@@ -7,4 +7,12 @@ router.get('/', function(req, res, next) {
     });
 });
 
+router.post('/chat', function(req, res, next) {
+    res.render('chat', {
+        title: req.body.room + ' - Crypto Chat',
+        user: req.body.user,
+        room: req.body.room
+    });
+});
+
 module.exports = router;

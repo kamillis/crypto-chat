@@ -1,5 +1,12 @@
 extends layout
 
 block content
-    h1= title
-    p Welcome to #{title}
+
+    div#index-wrapper.wrapper
+        form(action='/chat', method='POST')
+            div.form-group
+                input(type='text', name='user', placeholder='Nick', required='required')
+            div.form-group
+                input(type='text', name='room', placeholder='Room', required='required')
+            div.form-group
+                button(type='submit') Join!

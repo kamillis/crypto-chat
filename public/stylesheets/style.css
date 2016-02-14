@@ -1,8 +1,156 @@
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+.clearfix { display: inline-block; }
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+/* close commented backslash hack */
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-family: Helvetica, sans-serif;
+    font-size: 16px;
+    background: #fff;
+    color: #111111;
 }
 
 a {
-  color: #00B7FF;
+    color: #006666;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+strong {
+    font-weight: bold;
+}
+
+#page-header {
+    height: 5vh;
+    min-height: 30px;
+    line-height: 5vh;
+    background: #cccccc;
+    text-align: center;
+}
+
+#page-header h1 {
+    font-size: 16px;
+    display: inline;
+}
+
+.wrapper {
+    width: 40vw;
+    margin: 30px auto;
+}
+
+/* Error page -------------------------------------- */
+
+#error-wrapper h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+#error-wrapper pre {
+    padding: 10px 0;
+    overflow-y: hidden;
+    overflow-x: scroll;
+}
+
+/* Index page -------------------------------------- */
+
+#index-wrapper input {
+    display: block;
+    width: 100%;
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+#index-wrapper button {
+    display: block;
+    font-size: 24px;
+    width: 150px;
+    margin: 0 auto;
+}
+
+/* Chat page -------------------------------------- */
+
+#chat-wrapper {
+    height: 90vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.message {
+    margin: 20px;
+}
+
+.message.server {
+    padding: 10px;
+    color: #ffffff;
+    text-align: center;
+    background-color: rebeccapurple;
+}
+
+.message .info {
+    padding: 10px;
+    color: #ffffff;
+    background-color: steelblue;
+}
+
+.message.my .info {
+    background-color: green;
+}
+
+.message .info .author {
+    width: auto;
+    float: left;
+}
+
+.message .info .date {
+    width: auto;
+    float: right;
+}
+
+.message .content {
+    padding: 10px;
+    line-height: 150%;
+    background-color: lightsteelblue;
+    border: 1px steelblue solid;
+}
+
+.message.my .content {
+    background-color: lightgreen;
+    border: 1px green solid;
+}
+
+#chat-form-wrapper {
+    height: 5vh;
+    min-height: 30px;
+    line-height: 5vh;
+    background: #cccccc;
+}
+
+#chat-form-wrapper form {
+    width: 80vw;
+    margin: 0 auto;
+}
+
+#chat-form-wrapper input {
+    display: inline-block;
+    font-size: 16px;
+    width: calc(100% - 90px);
+}
+
+#chat-form-wrapper button {
+    display: inline-block;
+    font-size: 16px;
+    width: 80px;
 }

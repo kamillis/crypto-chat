@@ -1,0 +1,32 @@
+extends layout
+
+block content
+
+    div#chat-wrapper
+
+        div.message
+            div.info.clearfix
+                div.author
+                    strong Kaka
+                div.date
+                    span 11.03.1994 12:51
+            div.content
+                p Jakaś wiadomość
+
+        div.message.my
+            div.info.clearfix
+                div.author
+                    strong Kaka
+                div.date
+                    span 11.03.1994 12:51
+            div.content
+                p Jakaś wiadomość
+
+        div.message.server
+            p
+                strong Kaka is connected!
+
+    div#chat-form-wrapper
+        form(action='#' method='POST')
+            input(type='text', placeholder='Type a message...', required='required')
+            button(type='submit') Send!
