@@ -1,21 +1,20 @@
 doctype html
-html(lang='en')
+html(lang='en', ng-app='chatApp')
     head
         title= title
         meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
         link(rel='stylesheet', href='/stylesheets/reset.css')
         link(rel='stylesheet', href='/stylesheets/style.css')
         script(src='/javascripts/angular.min.js')
         script(src='/javascripts/socket.io.js')
         script(src='/javascripts/rc4.js')
-        if user && room
-            script= "var user = '" + user + "'; var room = '" + room + "';"
         script(src='/javascripts/chat.js')
         <!--[if lt IE 9]>
         script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
         <![endif]-->
 
-    body
+    body(ng-controller='ChatController')
         header#page-header
             a(href='/')
                 h1= title
