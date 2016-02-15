@@ -43,6 +43,6 @@ app.use(function(err, req, res, next) {
 // run server on port = 3000
 var server = http.createServer(app);
 server.listen(3000);
-chat(server);
+chat(app, server);
 
 module.exports = app;

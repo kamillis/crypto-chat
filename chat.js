@@ -1,17 +1,21 @@
 var socketIO = require('socket.io');
+var Crypto = require('./utils/crypto');
 
-module.exports = function(server) {
+module.exports = function(app, server) {
+
+    var crypto = new Crypto();
 
     var io = socketIO(server, {
         path: '/chat'
     });
 
     io.use(function(socket, next) {
-        var user = socket.handshake.query.user;
-        var room = socket.handshake.query.room;
-        if (user && room) {
-            socket.user = user;
-            socket.room = room;
+        var data = socket.handshake.query.data;
+        data = crypto.rsaDecrypt(data);
+        data = data.split('|');
+        if (data.length == 2) {
+            socket.user = data[0];
+            socket.room = data[1];
             return next();
         } else {
             return next(new Error("Wrong request."));

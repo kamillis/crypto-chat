@@ -1,7 +1,7 @@
 angular.module('chatApp', [])
     .controller('ChatController', ['$scope', function($scope) {
 
-        var socket;
+        var socket, crypto;
 
         $scope.chatReady = false;
         $scope.user = '';
@@ -16,10 +16,13 @@ angular.module('chatApp', [])
         };
 
         var initSocket = function(user, room) {
+            crypto = new Crypto();
+            var data = user + '|' + room;
+            var encryptedData = crypto.rsaEncrypt(data);
+
             socket = io({
                 path: '/chat',
-                query: 'user=' + encodeURIComponent(user)
-                    + '&room=' + encodeURIComponent(room)
+                query: 'data=' + encodeURIComponent(encryptedData)
             });
 
             socket.on('new message', function(message) {
