@@ -62,8 +62,12 @@ module.exports = function(app, server) {
             if (!chatReady) {
                 var decData = crypto.decryptMessage(message, sessionKey);
                 var data = decData.split('|');
-                initChat(data[0], data[1]);
-                socket.emit('chat ready');
+                if (users.userExists(data[1], data[0])) {
+                    socket.emit('user exists');
+                } else {
+                    initChat(data[0], data[1]);
+                    socket.emit('chat ready');
+                }
             }
         });
 

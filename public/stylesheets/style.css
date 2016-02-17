@@ -80,6 +80,14 @@ strong {
     margin: 0 auto;
 }
 
+#index-wrapper .index-error {
+    color: #ffffff;
+    background-color: brown;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 30px;
+}
+
 /* Chat page -------------------------------------- */
 
 #chat-wrapper {

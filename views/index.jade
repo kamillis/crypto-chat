@@ -4,11 +4,18 @@ block content
 
     div(ng-hide="chatReady")
         div#index-wrapper.wrapper
+
+            div(ng-show="userExists")
+                div.index-error
+                    p Someone in "{{room}}" uses "{{user}}" nick. Choose different one.
+
             form(ng-submit='joinUser()')
                 div.form-group
-                    input(type='text', ng-model='user', placeholder='Nick', required='required')
+                    input(type='text', ng-model='user', ng-change='userExists = false',
+                    placeholder='Nick', required='required')
                 div.form-group
-                    input(type='text', ng-model='room', placeholder='Room', required='required')
+                    input(type='text', ng-model='room', ng-change='userExists = false',
+                    placeholder='Room', required='required')
                 div.form-group
                     button(type='submit') Join!
 

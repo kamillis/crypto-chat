@@ -2,6 +2,10 @@ function Users() {
     this.storage = {};
 }
 
+Users.prototype.userExists = function(room, user) {
+    return this.storage[room] && this.storage[room][user];
+};
+
 Users.prototype.addUser = function(room, user, socket, key) {
     if (!this.storage[room]) this.storage[room] = {};
     if (!this.storage[room][user]) this.storage[room][user] = {};
@@ -14,6 +18,5 @@ Users.prototype.deleteUser = function(room, user) {
     if (Object.keys(this.storage[room]).length == 0)
         delete this.storage[room];
 };
-
 
 module.exports = Users;

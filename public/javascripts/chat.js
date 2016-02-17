@@ -4,6 +4,7 @@ angular.module('chatApp', [])
         var socket, crypto;
 
         $scope.chatReady = false;
+        $scope.userExists = false;
         $scope.user = '';
         $scope.room = '';
 
@@ -32,6 +33,7 @@ angular.module('chatApp', [])
                 scrollToBottom();
             });
 
+            $scope.userExists = false;
             $scope.chatReady = true;
             $scope.$apply();
         };
@@ -68,6 +70,13 @@ angular.module('chatApp', [])
             socket.on('chat ready', function() {
                 if (!$scope.chatReady) {
                     initChat();
+                }
+            });
+
+            socket.on('user exists', function() {
+                if (!$scope.chatReady) {
+                    $scope.userExists = true;
+                    $scope.$apply();
                 }
             });
         };
