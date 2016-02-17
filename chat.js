@@ -3,6 +3,8 @@ var Crypto = require('./utils/crypto');
 
 module.exports = function(app, server) {
 
+    var crypto = new Crypto();
+
     var io = socketIO(server, {
         path: '/chat'
     });
@@ -10,7 +12,7 @@ module.exports = function(app, server) {
     io.on('connection', function(socket) {
 
         var chatReady = false;
-        var crypto = new Crypto();
+        var serverKeys, sessionKey;
 
         var initChat = function(user, room) {
 
@@ -19,9 +21,9 @@ module.exports = function(app, server) {
 
             // Listen to new messages
             socket.on('new message', function(message) {
-                var decMsg = crypto.decryptMessage(message);
+                var decMsg = crypto.decryptMessage(message, sessionKey);
                 var msg = Date.now() + '|' + decMsg;
-                var encMsg = crypto.encryptMessage(msg);
+                var encMsg = crypto.encryptMessage(msg, sessionKey);
                 io.to(room).emit('new message', encMsg);
             });
 
@@ -37,15 +39,15 @@ module.exports = function(app, server) {
 
         socket.on('client public key', function(key) {
             if (!chatReady) {
-                crypto.generateKeys();
-                crypto.saveSessionKey(key);
-                socket.emit('server public key', crypto.serverPublicKey);
+                serverKeys = crypto.generateKeys();
+                sessionKey = crypto.getSessionKey(key, serverKeys.priKey);
+                socket.emit('server public key', serverKeys.pubKey);
             }
         });
 
         socket.on('chat data', function(message) {
             if (!chatReady) {
-                var decData = crypto.decryptMessage(message);
+                var decData = crypto.decryptMessage(message, sessionKey);
                 var data = decData.split('|');
                 initChat(data[0], data[1]);
                 socket.emit('chat ready');

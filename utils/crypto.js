@@ -6,12 +6,14 @@ function Crypto() {
 }
 
 Crypto.prototype.generateKeys = function() {
-    this.serverPrivateKey = Math.floor((Math.random() * 80) + 1);
-    this.serverPublicKey = this.powMod(this.generator, this.serverPrivateKey, this.prime);
+    var keys = {};
+    keys['priKey'] = Math.floor((Math.random() * 80) + 1);
+    keys['pubKey'] = this.powMod(this.generator, keys['priKey'], this.prime);
+    return keys;
 };
 
-Crypto.prototype.saveSessionKey = function(clientKey) {
-    this.sessionKey = this.powMod(clientKey, this.serverPrivateKey, this.prime);
+Crypto.prototype.getSessionKey = function(clientKey, serverPrivateKey) {
+    return this.powMod(clientKey, serverPrivateKey, this.prime);
 };
 
 Crypto.prototype.powMod = function(base, exp, mod){
@@ -23,14 +25,12 @@ Crypto.prototype.powMod = function(base, exp, mod){
     }
 };
 
-Crypto.prototype.encryptMessage = function(msg) {
-    var key = this.sessionKey.toString();
-    return CryptoJS.RC4.encrypt(msg, key);
+Crypto.prototype.encryptMessage = function(msg, key) {
+    return CryptoJS.RC4.encrypt(msg, key.toString());
 };
 
-Crypto.prototype.decryptMessage = function(msg) {
-    var key = this.sessionKey.toString();
-    var decrypted = CryptoJS.RC4.decrypt(msg, key);
+Crypto.prototype.decryptMessage = function(msg, key) {
+    var decrypted = CryptoJS.RC4.decrypt(msg, key.toString());
     return decrypted.toString(CryptoJS.enc.Utf8);
 };
 
