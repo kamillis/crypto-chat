@@ -15,19 +15,11 @@ angular.module('chatApp', [])
             wrapper.scrollTop = wrapper.scrollHeight;
         };
 
-        var initSocket = function(user, room) {
-            crypto = new Crypto();
-            var data = user + '|' + room;
-            var encryptedData = crypto.rsaEncrypt(data);
-
-            socket = io({
-                path: '/chat',
-                query: 'data=' + encodeURIComponent(encryptedData)
-            });
-
+        var initChat = function() {
             socket.on('new message', function(message) {
-                var msg = message.split('|');
-                var cssClass = (msg[1] == user ? 'my' : 'other');
+                var decMsg = crypto.decryptMessage(message);
+                var msg = decMsg.split('|');
+                var cssClass = (msg[1] == $scope.user ? 'my' : 'other');
 
                 $scope.messages.push({
                     date: msg[0],
@@ -40,19 +32,54 @@ angular.module('chatApp', [])
                 scrollToBottom();
             });
 
+            $scope.chatReady = true;
+            $scope.$apply();
+        };
+
+        var initConnection = function() {
+            crypto = new Crypto();
+
+            socket = io({
+                path: '/chat'
+            });
+
             socket.on('error', function(message) {
                 alert(message);
+            });
+
+            // Diffie Hellman key exchange
+
+            socket.on('generator and prime', function(data) {
+                if (!$scope.chatReady) {
+                    crypto.generateKeys(data.generator, data.prime);
+                    socket.emit('client public key', crypto.clientPublicKey);
+                }
+            });
+
+            socket.on('server public key', function(key) {
+                if (!$scope.chatReady) {
+                    crypto.saveSessionKey(key);
+                    var msg = $scope.user + '|' + $scope.room;
+                    var encMsg = crypto.encryptMessage(msg);
+                    socket.emit('chat data', encMsg);
+                }
+            });
+
+            socket.on('chat ready', function() {
+                if (!$scope.chatReady) {
+                    initChat();
+                }
             });
         };
 
         $scope.joinUser = function() {
-            initSocket($scope.user, $scope.room);
-            $scope.chatReady = true;
+            initConnection();
         };
 
         $scope.sendMessage = function() {
             var msg = $scope.user + '|' + $scope.message;
-            socket.emit('new message', msg);
+            var encMsg = crypto.encryptMessage(msg);
+            socket.emit('new message', encMsg);
             $scope.message = '';
         };
 

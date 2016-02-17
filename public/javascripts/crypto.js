@@ -1,17 +1,34 @@
 function Crypto() {
 
-    this.serverKey = "-----BEGIN PUBLIC KEY-----\n" +
-        "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC67yKo8HKg0z36BLscRyNcgXwK\n" +
-        "t6OW/l6L7CloJrfmngEvoamdCyYcVKOpG9/DyBWG3NSfnAzcMw/FOeKQJEXiBZK3\n" +
-        "lvWJO48QB7zZ/gBK8n/b10aplco80lJRzTWa2IAtqA5uSPqaUaWWVdPfvCech1z1\n" +
-        "iazzG40POI/BwY0/LQIDAQAB\n" +
-        "-----END PUBLIC KEY-----";
-
-    this.rsa = new JSEncrypt();
-    this.rsa.setPublicKey(this.serverKey);
-
 }
 
-Crypto.prototype.rsaEncrypt = function(str) {
-    return this.rsa.encrypt(str);
+Crypto.prototype.generateKeys = function(generator, prime) {
+    this.generator = generator;
+    this.prime = prime;
+    this.clientPrivateKey = Math.floor((Math.random() * 80) + 1);
+    this.clientPublicKey = this.powMod(generator, this.clientPrivateKey, this.prime);
+};
+
+Crypto.prototype.saveSessionKey = function(serverKey) {
+    this.sessionKey = this.powMod(serverKey, this.clientPrivateKey, this.prime);
+};
+
+Crypto.prototype.powMod = function(base, exp, mod){
+    if (exp == 0) return 1;
+    if (exp % 2 == 0) {
+        return Math.pow(this.powMod(base, (exp / 2), mod), 2) % mod;
+    } else {
+        return (base * this.powMod(base, (exp - 1), mod)) % mod;
+    }
+};
+
+Crypto.prototype.encryptMessage = function(msg) {
+    var key = this.sessionKey.toString();
+    return CryptoJS.RC4.encrypt(msg, key);
+};
+
+Crypto.prototype.decryptMessage = function(msg) {
+    var key = this.sessionKey.toString();
+    var decrypted = CryptoJS.RC4.decrypt(msg, key);
+    return decrypted.toString(CryptoJS.enc.Utf8);
 };
