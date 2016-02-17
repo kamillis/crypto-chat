@@ -2,6 +2,11 @@ function Users() {
     this.storage = {};
 }
 
+Users.prototype.getUsersList = function(room) {
+    if (!this.storage[room]) return [];
+    return Object.keys(this.storage[room]);
+};
+
 Users.prototype.userExists = function(room, user) {
     return this.storage[room] && this.storage[room][user];
 };

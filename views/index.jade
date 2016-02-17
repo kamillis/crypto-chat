@@ -20,15 +20,27 @@ block content
                     button(type='submit') Join!
 
     div(ng-show="chatReady")
-        div#chat-wrapper
-            div.message(ng-repeat='msg in messages', class='{{msg.cssClass}}')
-                div.info.clearfix
-                    div.author
-                        strong {{msg.user}}
-                    div.date
-                        span {{msg.date | date:'dd.MM.yyyy HH:mm:ss'}}
-                div.content
-                    p {{msg.content}}
+
+        div.clearfix
+            div(style='float:left;width:85vw')
+                div#chat-wrapper
+                    div.message(ng-repeat='msg in messages', class='{{msg.cssClass}}')
+                        div.info.clearfix
+                            div.author
+                                strong {{msg.user}}
+                            div.date
+                                span {{msg.date | date:'dd.MM.yyyy HH:mm:ss'}}
+                        div.content
+                            p {{msg.content}}
+
+            div(style='float:left;width:15vw')
+                div#sidebar
+                    h3 Room: {{room}}
+                    h4 Connected users:
+                    ul
+                        li(ng-repeat="cu in connectedUsers | orderBy:'name'")
+                            span.dot
+                            | {{cu.name}}
 
         div#chat-form-wrapper
             form(ng-submit='sendMessage()')

@@ -16,11 +16,25 @@ module.exports = function(app, server) {
         var chatReady = false;
         var sessionKey;
 
+        var emitUsersList = function(room) {
+            var conUsers = users.getUsersList(room).join('|');
+            for (var k in users.storage[room]) {
+                if (users.storage[room].hasOwnProperty(k)) {
+                    var user = users.storage[room][k];
+                    var encMsg = crypto.encryptMessage(conUsers, user.key);
+                    user.socket.emit('users changed', encMsg);
+                }
+            }
+        };
+
         var initChat = function(user, room) {
             users.addUser(room, user, socket, sessionKey);
 
             // Join socket to room
             socket.join(room);
+
+            // Emit current users list
+            emitUsersList(room);
 
             // Listen to new messages
             socket.on('new message', function(message) {
@@ -38,6 +52,7 @@ module.exports = function(app, server) {
             // Socket disconnect
             socket.on('disconnect', function() {
                 users.deleteUser(room, user);
+                emitUsersList(room);
             });
 
             chatReady = true;

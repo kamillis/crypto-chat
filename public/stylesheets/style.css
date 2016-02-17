@@ -88,6 +88,36 @@ strong {
     margin-bottom: 30px;
 }
 
+/* Sidebar ---------------------------------------- */
+
+#sidebar h3 {
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    background: #cccccc;
+    padding-bottom: 5vh;
+    margin-bottom: 10px;
+}
+
+#sidebar h4 {
+    padding: 10px;
+}
+
+#sidebar ul {
+    padding: 30px;
+    line-height: 200%;
+}
+
+#sidebar .dot {
+    display: inline-block;
+    background: lime;
+    vertical-align: middle;
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
 /* Chat page -------------------------------------- */
 
 #chat-wrapper {

@@ -10,6 +10,7 @@ angular.module('chatApp', [])
 
         $scope.message = '';
         $scope.messages = [];
+        $scope.connectedUsers = [];
 
         var scrollToBottom = function() {
             var wrapper = document.getElementById("chat-wrapper");
@@ -47,6 +48,20 @@ angular.module('chatApp', [])
 
             socket.on('error', function(message) {
                 alert(message);
+            });
+
+            socket.on('users changed', function(message) {
+                var decMsg = crypto.decryptMessage(message);
+                var list = decMsg.split('|');
+                $scope.connectedUsers = [];
+
+                list.forEach(function(name) {
+                    $scope.connectedUsers.push({
+                        name: name
+                    });
+                });
+
+                $scope.$apply();
             });
 
             // Diffie Hellman key exchange
