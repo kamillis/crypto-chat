@@ -9,11 +9,10 @@ module.exports = function(app, server) {
 
     io.on('connection', function(socket) {
 
-        var user, room;
         var chatReady = false;
         var crypto = new Crypto();
 
-        var initChat = function() {
+        var initChat = function(user, room) {
 
             // Join socket to room
             socket.join(room);
@@ -48,9 +47,7 @@ module.exports = function(app, server) {
             if (!chatReady) {
                 var decData = crypto.decryptMessage(message);
                 var data = decData.split('|');
-                user = data[0];
-                room = data[1];
-                initChat();
+                initChat(data[0], data[1]);
                 socket.emit('chat ready');
             }
         });
