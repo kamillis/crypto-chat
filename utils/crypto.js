@@ -1,7 +1,7 @@
 var CryptoJS = require('crypto-js');
 
 function Crypto() {
-    this.generator = 2;
+    this.generator = 7;
     this.prime = 7919;
 }
 
